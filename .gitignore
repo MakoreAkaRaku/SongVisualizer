@@ -1,6 +1,14 @@
 # Prerequisites
 *.d
 
+#Visual Studio things that i don't really know how to handle
+*.sln
+.vs/
+SongVisualizer/.vs
+*.vcxproj*
+Debug
+*.tlog
+
 # Compiled Object files
 *.slo
 *.lo
