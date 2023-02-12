@@ -1,18 +1,14 @@
 #pragma once
+#define _ALLOW_RTCc_IN_STL // Adding definition to cancel RTC on filesystem lib
 #include <filesystem>
-#include <iostream>
-
+#include "Visualizer.h"
+using namespace std::filesystem;
 class Song {
 public:
-	Song(wchar_t* path);
+	Song(const path &songPath);
 
-	~Song() {
-		delete mName;
-		delete mPath;
-		std::cout << "Goodbye!";
-	}
 private:
-	wchar_t* mName;
-	wchar_t* mPath;
+	std::string mName;
+	path mPath;
 	double mDuration;
 };

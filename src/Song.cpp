@@ -1,5 +1,5 @@
 #include "Song.h"
-
-Song::Song(wchar_t* path) {
-	std::cout << "Hello!";
+Song::Song(const path &path) {
+	mPath = path;
+	mName= path.stem().string();
 }
