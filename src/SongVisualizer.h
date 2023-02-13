@@ -5,9 +5,10 @@
 #include "Song.h"
 
 using namespace std;
-using namespace VISUALIZER;
 namespace fs = filesystem;
 
 const char DIR_NAME[] = "Songs";
-const std::string GIT_FILE = std::string(".gitignore");
+
+/// Returns a list with Songs that are currently supported.
+/// Returns an empty list if there's no supported format.
 list<Song>* CreatePlayList(path sPath);
