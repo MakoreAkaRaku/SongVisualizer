@@ -17,10 +17,11 @@ int main(int n, char **args) {
 		cin.get();
 		songList = CreatePlayList(c_path);
 	}
-	cout << songList;
+	for (auto s : *songList) {
+		cout << s;
+	}
 }
 
-//Returns a list with Songs that are currently supported. Returns en empty list there's no supported format.
 list<Song>* CreatePlayList(path sPath) {
 	list<Song> *songList = new list<Song>();
 	if (!fs::is_empty(sPath)) {
@@ -29,7 +30,7 @@ list<Song>* CreatePlayList(path sPath) {
 		for (directory_entry entry : dir_it) {
 			path filename = entry.path().filename();
 			//We verify that we can do a visualizer for that format
-			bool isValidFormat = (Visualizer::SUPPORTED_FORMATS.find(filename.extension().string())) != Visualizer::SUPPORTED_FORMATS.end();
+			bool isValidFormat = (AudioManager::GetAudioType(filename.extension())) != AudioType::NOT_SUPPORTED;
 			if (isValidFormat) {
 				Song s = Song(entry.path());
 				songList->push_back(s);
