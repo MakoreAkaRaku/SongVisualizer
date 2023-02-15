@@ -4,6 +4,9 @@ const std::map<path,AudioType> AudioManager::audiotype = {
 	{path(".wave"),AudioType::WAVE},
 	{path(".mp3"),AudioType::MP3}
 };
+
+const char DIR_NAME[] = "Songs";
+
 const AudioType AudioManager::GetAudioType(path p){
 	AudioType type;
 	try
@@ -34,6 +37,14 @@ AudioManager::AudioManager(path p)
 }
 
 void AudioManager::WAVManager() {
+	//WIP
+}
+
+void AudioManager::OpenFile() {
+	//WIP
+}
+
+void AudioManager::CloseFile() {
 	//WIP
 }
 

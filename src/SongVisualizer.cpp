@@ -3,7 +3,7 @@
 int main(int n, char **args) {
 	error_code err;
 	path c_path = current_path();
-	c_path.append(DIR_NAME);
+	c_path.append(AudioManager::DIR_NAME);
 	if (!exists(c_path)){
 		if (!create_directory(c_path,err)) {
 			cerr<< err.message();
