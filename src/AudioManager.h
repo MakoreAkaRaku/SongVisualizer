@@ -17,6 +17,8 @@ enum class AudioType {
 
 class AudioManager {
 public:
+	// Returns the AudioType from the pathfile.
+	// If the file is not supported yet, returns NOT_SUPPORTED.
 	static const AudioType GetAudioType(path p);
 	AudioManager(path p);
 private:
