@@ -12,7 +12,6 @@ const AudioType AudioManager::GetAudioType(path p){
 	}
 	catch (const std::out_of_range&)
 	{
-		std::cerr<< "This audio doesn't have a supported format, please consider not using it";
 		type = AudioType::NOT_SUPPORTED;
 	}
 	return type;
