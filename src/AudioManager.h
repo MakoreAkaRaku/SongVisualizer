@@ -1,18 +1,27 @@
 ﻿#pragma once
 #define _ALLOW_RTCc_IN_STL // Adding definition to cancel RTC on filesystem lib
 #include <filesystem>
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <set>
 #include <map>
 using namespace std::filesystem;
-
+using namespace std;
 // Possible Audio types that exist.
 enum class AudioType {
 	WAV = 0,
 	WAVE= WAV,
 	MP3,
 	NOT_SUPPORTED
+};
+
+class unsupportedexception : public exception {
+	const char* what() noexcept;
+};
+
+class ioexception : public exception {
+	const char* what() noexcept;
 };
 
 class AudioManager {
@@ -22,7 +31,7 @@ public:
 	static const AudioType GetAudioType(path p);
 
 	//Directory Name where all the audios will be checked.
-	static const char DIR_NAME[];
+	static const char *DIR_NAME;
 	AudioManager(path p);
 private:
 	/*
@@ -37,11 +46,11 @@ private:
 	void WAVManager();
 	void MP3Manager();
 	double Hz;
-	path mPath;
+	FILE* mPFile;
 	// Map with supported audio types that the audio manager can handle.
 	const static std::map<path, AudioType> audiotype;
 	// Closes the file.
 	void CloseFile();
 	// Opens the file to have read access.
-	void OpenFile();
+	void OpenFile(const char *dyn_path);
 };
