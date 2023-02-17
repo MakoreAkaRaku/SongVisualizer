@@ -48,7 +48,23 @@ AudioManager::AudioManager(path p)
 }
 
 void AudioManager::WAVManager() {
-	//WIP
+	
+	int headerSize = sizeof(WAV_Header);
+	wav_hdr = (WAV_Header*) malloc(headerSize);
+	fread_s(wav_hdr,headerSize,headerSize,1,mPFile);
+	cout << wav_hdr->RIFF <<"\n";
+	cout << wav_hdr->ChunkSize << "\n";
+	cout << wav_hdr->WAVE << "\n";
+	cout << wav_hdr->fmt << "\n";
+	cout << wav_hdr->Subchunk1Size << "\n";
+	cout << wav_hdr->AudioFormat << "\n";
+	cout << wav_hdr->NumOfChan << "\n";
+	cout << wav_hdr->SamplesPerSec << "\n";
+	cout << wav_hdr->bytesPerSec << "\n";
+	cout << wav_hdr->blockAlign << "\n";
+	cout << wav_hdr->bitsPerSample << "\n";
+	cout << wav_hdr->Subchunk2ID << "\n";
+	cout << wav_hdr->Subchunk2Size << "\n";
 }
 
 void AudioManager::OpenFile(const char *dyn_path) {

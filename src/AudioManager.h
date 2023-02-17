@@ -8,6 +8,39 @@
 #include <map>
 using namespace std::filesystem;
 using namespace std;
+
+
+
+
+/*
+* <WAVE - FORM> → RIFF('WAVE'
+* < FMT - CK >				// FORMAT
+* [<FACT - CK>]				// FACT CHUNK
+* [<CUE - CK>]				// CUE POINTS
+* [<PLAYLIST - CK>]			// PLAYLIST
+* [<ASSOC - DATA - LIST>]	// ASSOCIATED DATA LIST
+* <WAVE - DATA>)			// WAVE DATA
+*/
+struct WAV_Header {
+			/* RIFF Chunk Descriptor */
+	char                RIFF[4];        // RIFF Header (dunno )
+	unsigned long       ChunkSize;      // RIFF Chunk Size  
+	char                WAVE[4];        // WAVE Header      
+			/* "fmt" sub-chunk */
+	char                fmt[4];         // FMT header       
+	unsigned long       Subchunk1Size;  // Size of the fmt chunk                                
+	unsigned short      AudioFormat;    // Audio format 1=PCM,6=mulaw,7=alaw, 257=IBM Mu-Law, 258=IBM A-Law, 259=ADPCM 
+	unsigned short      NumOfChan;      // Number of channels 1=Mono 2=Sterio                   
+	unsigned long       SamplesPerSec;  // Sampling Frequency in Hz                             
+	unsigned long       bytesPerSec;    // bytes per second 
+	unsigned short      blockAlign;     // 2=16-bit mono, 4=16-bit stereo 
+	unsigned short      bitsPerSample;  // Number of bits per sample      
+			/* "data" sub-chunk */
+	char                Subchunk2ID[4]; // "data"  string   
+	unsigned long       Subchunk2Size;  // Sampled data length    
+
+};
+
 // Possible Audio types that exist.
 enum class AudioType {
 	WAV = 0,
@@ -34,19 +67,11 @@ public:
 	static const char *DIR_NAME;
 	AudioManager(path p);
 private:
-	/*
-	* <wave - form> → riff('wave'
-	* < fmt - ck >				// format
-	* [<fact - ck>]				// fact chunk
-	* [<cue - ck>]				// cue points
-	* [<playlist - ck>]			// playlist
-	* [<assoc - data - list>]	// associated data list
-	* <wave - data>)			// wave data
-	*/
 	void WAVManager();
 	void MP3Manager();
 	double Hz;
 	FILE* mPFile;
+	WAV_Header *wav_hdr;
 	// Map with supported audio types that the audio manager can handle.
 	const static std::map<path, AudioType> audiotype;
 	// Closes the file.
