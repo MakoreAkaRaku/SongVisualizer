@@ -16,19 +16,19 @@ enum class AudioType {
 	NOT_SUPPORTED
 };
 
-class unsupportedexception : public exception {
-	const char* what() noexcept;
+struct unsupportedexception : public exception {
+	const char* what()const override;
 };
 
-class ioexception : public exception {
-	const char* what() noexcept;
+struct ioexception : public exception {
+	const char* what()const override;
 };
 
 class AudioManager {
 public:
 	// Returns the AudioType from the pathfile.
 	// If the file is not supported yet, returns NOT_SUPPORTED.
-	static const AudioType GetAudioType(path p);
+	static const AudioType GetAudioType(path extension);
 
 	//Directory Name where all the audios will be checked.
 	static const char *DIR_NAME;

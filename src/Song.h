@@ -6,6 +6,7 @@ using namespace std::filesystem;
 class Song {
 public:
 	Song(const path &songPath);
+	void GetDataFromAudio();
 
 private:
 	std::string mName;

@@ -19,6 +19,7 @@ int main(int n, char **args) {
 	for (auto s : songList) {
 		cout << s;
 	}
+	songList.back().GetDataFromAudio();
 }
 
 list<Song> CreatePlayList(path sPath) {

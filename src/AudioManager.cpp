@@ -7,11 +7,11 @@ const std::map<path,AudioType> AudioManager::audiotype = {
 
 const char *AudioManager::DIR_NAME = "Songs";
 
-const AudioType AudioManager::GetAudioType(path p){
+const AudioType AudioManager::GetAudioType(path extension){
 	AudioType type;
 	try
 	{
-		type = audiotype.at(p);
+		type = audiotype.at(extension);
 	}
 	catch (const std::out_of_range&)
 	{
@@ -24,28 +24,26 @@ AudioManager::AudioManager(path p)
 {
 	string dyn_path = "./" + string(DIR_NAME) + "/" + p.filename().string();
 	// using dynamic path: ./ + DIR_NAME + / + filename.extension
-	const AudioType type = GetAudioType(p);
+	const AudioType type = GetAudioType(p.filename().extension());
 	try {
-		if (type == AudioType::NOT_SUPPORTED) {
-			throw unsupportedexception();
-		}
-		// Opening the file to process it
-		OpenFile(dyn_path.c_str());
 		switch (type)
 		{
 		case AudioType::WAV:
+			OpenFile(dyn_path.c_str());
 			WAVManager();
 			break;
 		case AudioType::MP3:
+			OpenFile(dyn_path.c_str());
 			MP3Manager();
 			break;
-		default:
+		case AudioType::NOT_SUPPORTED:
+			throw unsupportedexception();
 			break;
 		}
 		CloseFile();
 	}
-	catch (exception ex) {
-		cerr << "Error: " << ex.what() << "in AudioManager() for file " << dyn_path;
+	catch (const exception &ex) {
+		cerr << "Error: " << ex.what() << " in AudioManager() for file " << dyn_path;
 	}
 }
 
@@ -72,10 +70,10 @@ void AudioManager::MP3Manager()
 	//TODO
 }
 
-const char* unsupportedexception::what()noexcept {
+const char* unsupportedexception::what()const {
 	return "unsupported file type";
 }
 
-const char* ioexception::what()noexcept {
+const char* ioexception::what()const {
 	return "input/output exception occurred";
 }
