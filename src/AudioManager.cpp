@@ -52,8 +52,8 @@ void AudioManager::WAVManager() {
 }
 
 void AudioManager::OpenFile(const char *dyn_path) {
-	fopen_s(&mPFile,dyn_path,"r");
-	//mPFile = fopen_s(dyn_path,"r");
+	mPFile= fopen(dyn_path, "r");
+
 	if (!mPFile) {
 		throw ioexception();
 	}
