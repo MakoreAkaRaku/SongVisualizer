@@ -70,10 +70,10 @@ void AudioManager::MP3Manager()
 	//TODO
 }
 
-const char* unsupportedexception::what()const {
+const char* unsupportedexception::what()const noexcept {
 	return "unsupported file type";
 }
 
-const char* ioexception::what()const {
+const char* ioexception::what()const noexcept {
 	return "input/output exception occurred";
 }
