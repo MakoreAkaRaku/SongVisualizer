@@ -1,4 +1,4 @@
-#include "Song.h"
+#include "../includes/Song.h"
 
 Song::Song(const path &path) {
 	mPath = path;

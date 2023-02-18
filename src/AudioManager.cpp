@@ -1,4 +1,4 @@
-#include "AudioManager.h"
+#include "../includes/AudioManager.h"
 const std::map<path,AudioType> AudioManager::audiotype = {
 	{path(".wav"),AudioType::WAV},
 	{path(".wave"),AudioType::WAVE},
