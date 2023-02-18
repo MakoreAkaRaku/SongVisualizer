@@ -17,11 +17,11 @@ enum class AudioType {
 };
 
 struct unsupportedexception : public exception {
-	const char* what()const override;
+	const char *what() const noexcept override;
 };
 
 struct ioexception : public exception {
-	const char* what()const override;
+	const char* what()const noexcept override;
 };
 
 class AudioManager {
