@@ -1,23 +1,23 @@
-CC=/usr/bin/g++	#Compiler used
-LVERSION=-std=c++17 #Language Version
-CXXFLAGS=-g#Cpp flags
-CFLAGS=-Wall#Compiler Flags
-LFLAGS=-lstdc++fs#Linker Flags; for now there's none
-SRC=src/*.cpp
-LIBS= 
-INCLUDES=includes/*.h
-OBJS=build/*.o
-PROG=SongVisualizer.exe
+BUILD_DIR:= ./build
+SRC_DIRS := ./src
+INCL_DIR := ./includes
+CC := /usr/bin/g++		#Compiler used
+LVERSION := -std=c++17 	#Language Version
+CXXFLAGS := -g			#Cpp flags
+CFLAGS := -Wall			#Compiler Flags
+LFLAGS := -lstdc++fs	#Linker Flags; for now there's none
+SRCS := AudioManager.cpp Song.cpp Visualizer.cpp SongVisualizer.cpp
+LIBS := 
+INCLUDES := $(SRCS:%.cpp=$(INCL_DIR)/%.h)
+OBJS := $(SRCS:%.cpp=$(BUILD_DIR)/%.o)
+PROG := SongVisualizer.exe
 
 SongVisualizer: $(OBJS)
-	$(CC) $(CFLAGS) $(CXXFLAGS) -o $(PROG) $(OBJS) 
+	$(CC) $(CFLAGS) $(CXXFLAGS) $(LVERSION) ${LFLAGS} $(INCLUDES) $(OBJS) -o $(PROG)
 
-${OBJS}: $(SRC)
-	${CC} -c ${CFLAGS} $(CXXFLAGS) ${LFLAGS} ${LVERSION} ${INCLUDES} ${SRC}
-	mv *.o build/
 
-#$(OBJECTS): src/%.o : src/%.c
-#    $(CC) $(CFLAGS) -c $< $(LIB_PATH) $(LIBS) -o $@
+$(BUILD_DIR)/%.o:$(SRC_DIRS)/%.cpp $(INCL_DIR)/%.h 
+	$(CC) ${CFLAGS} $(CXXFLAGS) $(LVERSION) ${LFLAGS} -c $< -o $@ 
 
 .PHONY: SongVisualizer
 clean:
