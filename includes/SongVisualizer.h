@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "Song.h"
+#include <list>
 
 using namespace std;
 namespace fs = filesystem;

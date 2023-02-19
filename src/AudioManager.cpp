@@ -1,4 +1,4 @@
-#include "AudioManager.h"
+#include "../includes/AudioManager.h"
 const std::map<path,AudioType> AudioManager::audiotype = {
 	{path(".wav"),AudioType::WAV},
 	{path(".wave"),AudioType::WAVE},
@@ -68,8 +68,8 @@ void AudioManager::WAVManager() {
 }
 
 void AudioManager::OpenFile(const char *dyn_path) {
-	fopen_s(&mPFile,dyn_path,"r");
-	//mPFile = fopen_s(dyn_path,"r");
+	mPFile= fopen(dyn_path, "r");
+
 	if (!mPFile) {
 		throw ioexception();
 	}
@@ -86,10 +86,10 @@ void AudioManager::MP3Manager()
 	//TODO
 }
 
-const char* unsupportedexception::what()const {
+const char* unsupportedexception::what()const noexcept {
 	return "unsupported file type";
 }
 
-const char* ioexception::what()const {
+const char* ioexception::what()const noexcept {
 	return "input/output exception occurred";
 }

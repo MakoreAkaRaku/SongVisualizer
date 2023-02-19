@@ -1,4 +1,4 @@
-#include "SongVisualizer.h"
+#include "../includes/SongVisualizer.h"
 
 int main(int n, char **args) {
 	error_code err;
