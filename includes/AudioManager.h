@@ -1,6 +1,6 @@
 ﻿#pragma once
 #define _ALLOW_RTCc_IN_STL // Adding definition to cancel RTC on filesystem lib
-#ifdef _WIN32
+#ifdef _WIN32				//If device is compiled on Windows, then define SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
 #include <filesystem>
