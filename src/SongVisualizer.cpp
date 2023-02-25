@@ -18,6 +18,8 @@ int main(int n, char **args) {
 	}
 	for (auto s : songList) {
 		cout << s;
+		if (&s != &songList.back())
+			cout << "\n";
 	}
 	songList.back().GetDataFromAudio();
 }
