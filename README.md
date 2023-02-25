@@ -1,6 +1,12 @@
 # SongVisualizer
 A c++ based program to create a unique visualizer related to a song.
 
+<div 
+  align="center"
+  style="background-color: white;">
+  <img src="pictures/WAV_format.gif">
+</div>
+
 ## Introduction:
 Have you heard a song which is a banger but it does not have a video/visualizer good enough?
 
