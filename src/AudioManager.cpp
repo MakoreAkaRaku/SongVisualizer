@@ -26,10 +26,10 @@ AudioManager::AudioManager(path p)
 	// using dynamic path: ./ + DIR_NAME + / + filename.extension
 	const AudioType type = GetAudioType(p.filename().extension());
 	try {
+		OpenFile(dyn_path.c_str());
 		switch (type)
 		{
 		case AudioType::WAV:
-			OpenFile(dyn_path.c_str());
 			WAVManager();
 			break;
 		case AudioType::MP3:
@@ -40,31 +40,20 @@ AudioManager::AudioManager(path p)
 			throw unsupportedexception();
 			break;
 		}
-		CloseFile();
 	}
 	catch (const exception &ex) {
 		cerr << "Error: " << ex.what() << " in AudioManager() for file " << dyn_path;
+		
 	}
+	CloseFile();
 }
 
 void AudioManager::WAVManager() {
 	
 	int headerSize = sizeof(WAV_Header);
 	wav_hdr = (WAV_Header*) malloc(headerSize);
-	fread_s(wav_hdr,headerSize,headerSize,1,mPFile);
-	cout << wav_hdr->RIFF <<"\n";
-	cout << wav_hdr->ChunkSize << "\n";
-	cout << wav_hdr->WAVE << "\n";
-	cout << wav_hdr->fmt << "\n";
-	cout << wav_hdr->Subchunk1Size << "\n";
-	cout << wav_hdr->AudioFormat << "\n";
-	cout << wav_hdr->NumOfChan << "\n";
-	cout << wav_hdr->SamplesPerSec << "\n";
-	cout << wav_hdr->bytesPerSec << "\n";
-	cout << wav_hdr->blockAlign << "\n";
-	cout << wav_hdr->bitsPerSample << "\n";
-	cout << wav_hdr->Subchunk2ID << "\n";
-	cout << wav_hdr->Subchunk2Size << "\n";
+	fread(wav_hdr,headerSize,1,mPFile);
+	wav_hdr->out();
 }
 
 void AudioManager::OpenFile(const char *dyn_path) {
@@ -92,4 +81,20 @@ const char* unsupportedexception::what()const noexcept {
 
 const char* ioexception::what()const noexcept {
 	return "input/output exception occurred";
+}
+
+const void WAV_Header::out() {
+	cout << "RIFF: " << RIFF << "\n";
+	cout << "ChunkSize: " << ChunkSize << "\n";
+	cout << "WAVE: " << WAVE << "\n";
+	cout << "fmt: " << fmt << "\n";
+	cout << "Subchunk1Size: " << Subchunk1Size << "\n";
+	cout << "AudioFormat: " << AudioFormat << "\n";
+	cout << "NumOfChan: " << NumOfChan << "\n";
+	cout << "SamplesPerSec: " << SamplesPerSec << "\n";
+	cout << "bytesPerSec: " << bytesPerSec << "\n";
+	cout << "blockAlign: " << blockAlign << "\n";
+	cout << "bitsPerSample: " << bitsPerSample << "\n";
+	cout << "Subchunk2ID:" << Subchunk2ID << "\n";
+	cout << "SubChunk2Size:" << Subchunk2Size << "\n";
 }
