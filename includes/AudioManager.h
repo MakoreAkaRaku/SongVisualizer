@@ -9,6 +9,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include "../includes/Sample.h"
 using namespace std::filesystem;
 using namespace std;
 
@@ -75,7 +76,8 @@ public:
 private:
 	void WAVManager();
 	void MP3Manager();
-	double Hz;
+	unsigned int nOfSamplesPerChan,bytesPerSample;
+	list<list<Sample*>> channelData;
 	FILE* mPFile;
 	WAV_Header *wav_hdr;
 	// Map with supported audio types that the audio manager can handle.
