@@ -49,15 +49,59 @@ AudioManager::AudioManager(path p)
 }
 
 void AudioManager::WAVManager() {
-	
-	int headerSize = sizeof(WAV_Header);
-	wav_hdr = (WAV_Header*) malloc(headerSize);
-	fread(wav_hdr,headerSize,1,mPFile);
-	wav_hdr->out();
+
+	size_t headerSize = sizeof(WAV_Header);
+	try {
+		wav_hdr = (WAV_Header*)malloc(headerSize);
+		if (!wav_hdr) {
+			throw exception("Could not allocate more memory");
+		}
+		if (fread(wav_hdr, 1, headerSize, mPFile) != headerSize) {
+			throw exception("WAV-File reading was not possible");
+		}
+		bytesPerSample = wav_hdr->bitsPerSample / 8;
+		// NºSamples = dataSize / (NºOfChannels * bytesPerSample).
+		nOfSamplesPerChan = wav_hdr->Subchunk2Size / (wav_hdr->NumOfChan * bytesPerSample);
+		for (size_t i = 0; i < wav_hdr->NumOfChan; i++)
+		{
+			channelData.push_back(list<Sample*>());
+		}
+		//For each sample
+		char* dataBuff = (char*)malloc(sizeof(char) *bytesPerSample);
+		if (!dataBuff) {
+			throw exception("Could not allocate more memory");
+		}
+		for (size_t i = 0; i < nOfSamplesPerChan; i++)
+		{
+			//We read the sample from the wav file.
+			if (fread(dataBuff, 1, bytesPerSample, mPFile) != bytesPerSample) {
+				throw exception("WAV-File reading was not possible");
+			}
+			//For right Channel we create a Sample.
+			channelData.front().push_back(new Sample(dataBuff, bytesPerSample));
+		}
+		//If there's another channel, repeat it to store in the left channel.
+		if (wav_hdr->NumOfChan > 1) {
+			for (size_t i = 0; i < nOfSamplesPerChan; i++)
+			{
+				//We read the sample from the wav file.
+				if (fread(dataBuff, 1, bytesPerSample, mPFile) != bytesPerSample) {
+					throw exception("WAV-File reading was not possible");
+				}
+				//For left Channel we create a Sample.
+				channelData.back().push_back(new Sample(dataBuff, bytesPerSample));
+			}
+
+		}
+		free(dataBuff); // Freeing the buffer once we stopped using it.
+	}
+	catch (exception& ex) {
+		cout << ex.what();
+	}
 }
 
 void AudioManager::OpenFile(const char *dyn_path) {
-	mPFile= fopen(dyn_path, "r");
+	mPFile= fopen(dyn_path, "rb");  //Must explicitly tell that is a binary file.
 
 	if (!mPFile) {
 		throw ioexception();
