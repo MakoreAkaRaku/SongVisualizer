@@ -52,15 +52,20 @@ list<list<Sample*>> AudioManager::GetChannelsData() {
 	return mChannelData;
 }
 
-unsigned int AudioManager::GetNumOfSamplesPerChan() {
-	return mNOfSampPerChan;
+unsigned int AudioManager::GetSamplesPerChan() {
+	return mSamplesPerChan;
 }
-unsigned int AudioManager::GetNumOfBytesPerSample() {
+unsigned int AudioManager::GetBytesPerSample() {
 	return mBytesPerSample;
 }
-unsigned int AudioManager::GetNumOfBytesPerSec() {
+unsigned int AudioManager::GetBytesPerSec() {
 	return mBytesPerSec;
 }
+
+unsigned int AudioManager::GetSamplesPerSec() {
+	return mSamplesPerSec;
+}
+
 void AudioManager::WAVManager() {
 
 	size_t headerSize = sizeof(WAV_Header);
@@ -73,9 +78,10 @@ void AudioManager::WAVManager() {
 			throw exception("WAV-File reading was not possible");
 		}
 		mBytesPerSec = mWav_hdr->bytesPerSec;
+		mSamplesPerSec = mWav_hdr->SamplesPerSec;
 		mBytesPerSample = mWav_hdr->bitsPerSample / 8;
 		// NºSamples = dataSize / (NºOfChannels * bytesPerSample).
-		mNOfSampPerChan = mWav_hdr->Subchunk2Size / (mWav_hdr->NumOfChan * mBytesPerSample);
+		mSamplesPerChan = mWav_hdr->Subchunk2Size / (mWav_hdr->NumOfChan * mBytesPerSample);
 		for (size_t i = 0; i < mWav_hdr->NumOfChan; i++)
 		{
 			mChannelData.push_back(list<Sample*>());
@@ -85,7 +91,7 @@ void AudioManager::WAVManager() {
 		if (!dataBuff) {
 			throw exception("Could not allocate more memory");
 		}
-		for (size_t i = 0; i < mNOfSampPerChan; i++)
+		for (size_t i = 0; i < mSamplesPerChan; i++)
 		{
 			//We read the sample from the wav file.
 			if (fread(dataBuff, 1, mBytesPerSample, mPFile) != mBytesPerSample) {
@@ -96,7 +102,7 @@ void AudioManager::WAVManager() {
 		}
 		//If there's another channel, repeat it to store in the left channel.
 		if (mWav_hdr->NumOfChan > 1) {
-			for (size_t i = 0; i < mNOfSampPerChan; i++)
+			for (size_t i = 0; i < mSamplesPerChan; i++)
 			{
 				//We read the sample from the wav file.
 				if (fread(dataBuff, 1, mBytesPerSample, mPFile) != mBytesPerSample) {

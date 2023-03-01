@@ -72,18 +72,20 @@ public:
 	// Returns a list of the song channels with their respective samples.
 	list<list<Sample*>> GetChannelsData();
 	// Returns the number of Samples per channel.
-	unsigned int GetNumOfSamplesPerChan();
+	unsigned int GetSamplesPerChan();
 	// Returns the number of bytes per sample.
-	unsigned int GetNumOfBytesPerSample();
-	// Returns the number of bytes per second from the song.
-	unsigned int GetNumOfBytesPerSec();
+	unsigned int GetBytesPerSample();
+	// Returns the number of bytes per second from the audio.
+	unsigned int GetBytesPerSec();
+	// Returns the number of samples per second from the audio.
+	unsigned int GetSamplesPerSec();
 	//Directory Name where all the audios will be checked.
 	static const char *DIR_NAME;
 	AudioManager(path p);
 private:
 	void WAVManager();
 	void MP3Manager();
-	unsigned int mNOfSampPerChan,mBytesPerSample,mBytesPerSec;
+	unsigned int mSamplesPerChan,mBytesPerSample,mBytesPerSec, mSamplesPerSec;
 	//Returns the list of channels with the sample data.
 	list<list<Sample*>> mChannelData;
 	FILE* mPFile;
