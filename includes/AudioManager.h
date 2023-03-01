@@ -69,19 +69,28 @@ public:
 	// Returns the AudioType from the pathfile.
 	// If the file is not supported yet, returns NOT_SUPPORTED.
 	static const AudioType GetAudioType(path extension);
-
+	// Returns a list of the song channels with their respective samples.
+	list<list<Sample*>> GetChannelsData();
+	// Returns the number of Samples per channel.
+	unsigned int GetNumOfSamplesPerChan();
+	// Returns the number of bytes per sample.
+	unsigned int GetNumOfBytesPerSample();
+	// Returns the number of bytes per second from the song.
+	unsigned int GetNumOfBytesPerSec();
 	//Directory Name where all the audios will be checked.
 	static const char *DIR_NAME;
 	AudioManager(path p);
 private:
 	void WAVManager();
 	void MP3Manager();
-	unsigned int nOfSamplesPerChan,bytesPerSample;
-	list<list<Sample*>> channelData;
+	unsigned int mNOfSampPerChan,mBytesPerSample,mBytesPerSec;
+	//Returns the list of channels with the sample data.
+	list<list<Sample*>> mChannelData;
 	FILE* mPFile;
-	WAV_Header *wav_hdr;
+	WAV_Header *mWav_hdr;
+	AudioType mType;
 	// Map with supported audio types that the audio manager can handle.
-	const static std::map<path, AudioType> audiotype;
+	const static std::map<path, AudioType> mAudioType;
 	// Closes the file.
 	void CloseFile();
 	// Opens the file to have read access.
