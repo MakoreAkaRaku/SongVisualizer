@@ -1,27 +1,30 @@
 #include "../includes/SongVisualizer.h"
 
+int WinMain(int argc, char** argv)
+{
+
+}
 int main(int n, char **args) {
-	error_code err;
-	path c_path = current_path();
-	c_path.append(AudioManager::DIR_NAME);
-	if (!exists(c_path)){
-		if (!create_directory(c_path,err)) {
-			cerr<< err.message();
-			return 1;
+	try {
+		path c_path = SetDirectory();
+		list<Song> songList = CreatePlayList(c_path);
+		while (songList.empty()) {
+			cerr << "Directory has no songs, please put at least a song\nPress 'Enter' key to continue\n";
+			cin.get();
+			songList = CreatePlayList(c_path);
 		}
+		cout << endl << "Found " << songList.size() << "songs" << endl;
+		for (auto s : songList) {
+			cout << s;
+			if (&s != &songList.back())
+				cout << "\n";
+		}
+		songList.back().GetDataFromAudio();
 	}
-	list<Song> songList = CreatePlayList(c_path);
-	while (songList.empty()) {
-		cerr << "Directory has no songs, please put at least a song\nPress 'Enter' key to continue\n";
-		cin.get();
-		songList = CreatePlayList(c_path);
+	catch (exception& ex)
+	{
+		cerr << ex.what();
 	}
-	for (auto s : songList) {
-		cout << s;
-		if (&s != &songList.back())
-			cout << "\n";
-	}
-	songList.back().GetDataFromAudio();
 }
 
 list<Song> CreatePlayList(path sPath) {
@@ -40,4 +43,20 @@ list<Song> CreatePlayList(path sPath) {
 		}
 	}
 	return songList;
+}
+
+path SetDirectory()
+{
+	error_code err;
+	path c_path = current_path();
+	c_path.append(AudioManager::DIR_NAME);
+	if (!exists(c_path))
+	{
+		if (!create_directory(c_path, err))
+		{
+			string err_msg = string("Could not create ") + string(AudioManager::DIR_NAME, " directory");
+			throw exception(err_msg.c_str());
+		}
+	}
+
 }
