@@ -6,7 +6,10 @@ Song::Song(const path &path) {
 }
 
 void Song::GetDataFromAudio() {
-	const AudioManager am = AudioManager(mPath);
+	AudioManager am = AudioManager(mPath);
+	mBytesPerSec = am.GetBytesPerSec();
+	mSamplesPerSec = am.GetSamplesPerSec();
+	mBytesPerSample = am.GetBytesPerSample();
 }
 std::ostream &operator<<(std::ostream& os, const Song &s)
 {

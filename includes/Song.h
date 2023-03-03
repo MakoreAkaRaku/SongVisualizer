@@ -11,6 +11,8 @@ public:
 private:
 	std::string mName;
 	path mPath;
+	//Duration of the song in milliseconds (for now).
 	double mDuration;
+	unsigned int mBytesPerSec, mSamplesPerSec, mBytesPerSample;
 	friend std::ostream& operator<<(std::ostream& os, const Song& s);
 };
